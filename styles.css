@@ -7,13 +7,15 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #6a0dad, #3e003f);
+    background-color: #111;
     color: #fff;
     overflow-x: hidden;
     position: relative;
+    margin-top: 50px; /* Prevents overlap from fixed bar */
+    padding-bottom: 100px; /* Adds space for footer */
 }
 
-/* Background */
+/* Background with Slanted Lines and Meteor Animation */
 body::after {
     content: '';
     position: absolute;
@@ -21,22 +23,23 @@ body::after {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://via.placeholder.com/1500x1500/4b0082/000000?text=Stars') repeat;
-    opacity: 0.1;
-    z-index: -1;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%), linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%);
+    background-size: 50px 50px;
+    z-index: -2;
 }
 
-/* Rotating Bar */
+/* Rotating Bar (Fixed) */
 .rotating-bar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #3e003f;
+    background-color: #333;
     color: #fff;
     text-align: center;
     padding: 10px 0;
     animation: rotateBar 10s infinite linear;
+    z-index: 1000; /* Keeps the bar on top */
 }
 
 @keyframes rotateBar {
@@ -58,17 +61,18 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #3e003f;
+    background-color: #222;
 }
 
 header .logo h1 {
     color: #800080;
     font-size: 2rem;
+    font-weight: bold;
     text-shadow: 2px 2px 5px #000;
 }
 
 nav button {
-    background-color: #800080;
+    background-color: #444;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -79,7 +83,31 @@ nav button {
 }
 
 nav button:hover {
-    background-color: #6a0dad;
+    background-color: #800080;
+}
+
+/* About Section */
+.about {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px;
+    background-color: #333;
+}
+
+.about-image img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.about-text h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.about-text p {
+    font-size: 1rem;
+    color: #ccc;
 }
 
 /* Main Content Section */
@@ -89,36 +117,24 @@ nav button:hover {
 }
 
 .main-header {
-    font-size: 5rem;
+    font-size: 4rem;
+    font-weight: bold;
     background: linear-gradient(45deg, #800080, #ff00ff, #6a0dad);
     background-clip: text;
     color: transparent;
     text-shadow: 0 0 10px purple, 0 0 20px pink, 0 0 30px blue;
-    animation: gradientText 3s ease-in-out infinite;
-}
-
-@keyframes gradientText {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 /* Buttons Section */
 .buttons-section {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     padding: 50px;
 }
 
 .button-item {
-    background-color: #333;
+    background-color: #444;
     padding: 30px;
     text-align: center;
     border-radius: 8px;
@@ -143,41 +159,26 @@ nav button:hover {
     background-color: #6a0dad;
 }
 
-/* Footer */
+/* Footer with Social Links */
 footer {
     text-align: center;
     padding: 20px;
-    background-color: #3e003f;
+    background-color: #222;
     color: white;
     font-size: 0.9rem;
 }
 
-/* Slanted Lines Background */
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%), linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%);
-    background-size: 40px 40px;
-    z-index: -2;
+footer .social-links {
+    margin-top: 10px;
 }
 
-/* Twinkle Effect for Big Headers */
-@keyframes twinkle {
-    0% {
-        text-shadow: 0 0 10px purple, 0 0 20px pink;
-    }
-    50% {
-        text-shadow: 0 0 15px purple, 0 0 25px pink, 0 0 35px blue;
-    }
-    100% {
-        text-shadow: 0 0 10px purple, 0 0 20px pink;
-    }
+footer .social-links a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 1.1rem;
 }
 
-.main-header {
-    animation: twinkle 3s infinite alternate;
+footer .social-links a:hover {
+    color: #800080;
 }
