@@ -1,0 +1,125 @@
+/* Global Styles */
+body {
+    background-color: #121212;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background-color: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #a855f7;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #a855f7;
+}
+
+.btn {
+    padding: 10px 20px;
+    background: #a855f7;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #8b4de6;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    background: url('https://source.unsplash.com/1600x900/?technology,dark') no-repeat center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.btn-glow {
+    box-shadow: 0px 0px 10px #a855f7;
+    transition: 0.4s;
+}
+
+.btn-glow:hover {
+    box-shadow: 0px 0px 20px #a855f7;
+}
+
+/* Features */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    padding: 100px 20px;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 250px;
+    transition: 0.4s;
+}
+
+.feature i {
+    font-size: 3rem;
+    color: #a855f7;
+    margin-bottom: 10px;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+}
+
+/* Footer */
+footer {
+    padding: 20px;
+    background: #1a1a1a;
+    margin-top: 50px;
+}
