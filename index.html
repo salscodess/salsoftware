@@ -1,88 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Coming Soon - Salsoftware.online</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-
-        .container {
-            padding: 40px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            font-size: 48px;
-            color: #2c3e50;
-        }
-
-        p {
-            font-size: 20px;
-            color: #7f8c8d;
-        }
-
-        .email-input {
-            padding: 12px;
-            margin-top: 20px;
-            font-size: 16px;
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid #3498db;
-            border-radius: 4px;
-        }
-
-        .subscribe-btn {
-            padding: 12px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-
-        .subscribe-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .footer {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #bdc3c7;
-        }
-    </style>
+    <title>SalSoftware - Premium Software & Open Source</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 </head>
-
 <body>
-    <div class="container">
-        <h1>Coming Soon!</h1>
-        <p>We're working hard to bring you something awesome. Stay tuned!</p>
-        
-        <!-- Optional: Email Subscription -->
-        <p>Enter your email to get notified when we launch:</p>
-        <input type="email" class="email-input" placeholder="Your email address" />
-        <button class="subscribe-btn">Subscribe</button>
 
-        <div class="footer">
-            <p>&copy; 2025 Salsoftware.online. All rights reserved.</p>
+    <!-- Navigation -->
+    <header>
+        <div class="logo">SalSoftware</div>
+        <nav>
+            <ul>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Open Source</a></li>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#" class="btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-aos="fade-up">Premium Software & Open Source</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Buy, sell, and download the best software and courses.</p>
+            <a href="#" class="btn btn-glow" data-aos="zoom-in" data-aos-delay="400">Explore Now</a>
         </div>
-    </div>
-</body>
+    </section>
 
+    <!-- Features -->
+    <section class="features">
+        <div class="feature" data-aos="fade-right">
+            <i class="fas fa-shopping-cart"></i>
+            <h3>Buy & Sell Software</h3>
+            <p>Sell your software or buy high-quality tools.</p>
+        </div>
+        <div class="feature" data-aos="fade-up">
+            <i class="fas fa-code"></i>
+            <h3>Open Source Downloads</h3>
+            <p>Access free code & software for your projects.</p>
+        </div>
+        <div class="feature" data-aos="fade-left">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Learn & Grow</h3>
+            <p>Premium courses to upgrade your skills.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 SalSoftware. All rights reserved.</p>
+    </footer>
+
+</body>
 </html>
