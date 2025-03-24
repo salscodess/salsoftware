@@ -97,7 +97,23 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* Centered Box Section */
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full screen height */
+    background: #f0f0f0;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 80px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Centered Box Section with Buttons */
 .centered-box {
     display: flex;
     justify-content: center;
@@ -117,15 +133,9 @@ body {
     text-align: center;
 }
 
-.box h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
 .box .btn {
     font-size: 18px;
-    padding: 10px 20px;
+    padding: 12px 25px;
 }
 
 /* Footer */
