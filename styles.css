@@ -1,3 +1,10 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* Announcement Bar */
 .announcement {
     width: 100%;
@@ -11,6 +18,7 @@
     white-space: nowrap;
     position: fixed;
     top: 0;
+    left: 0;
     z-index: 1000;
 }
 
@@ -31,9 +39,10 @@ header {
     justify-content: space-between;
     align-items: center;
     background: black;
-    padding: 15px 40px;
+    padding: 15px 20px;
     position: fixed;
-    top: 30px; /* Below the announcement bar */
+    top: 40px; /* Adjusted for the announcement bar */
+    left: 0;
     width: 100%;
     z-index: 999;
 }
@@ -43,7 +52,6 @@ header {
     font-size: 22px;
     color: #a855f7;
     font-weight: bold;
-    margin-right: auto; /* To ensure it stays on the left */
 }
 
 /* Navigation Links */
@@ -87,13 +95,13 @@ nav ul li a:hover {
 
 /* Push Page Content Down (Avoid Overlapping) */
 body {
-    margin-top: 100px; /* Adjusted for announcement & nav bar */
+    margin-top: 120px; /* Adjusted for announcement & nav bar */
 }
 
 /* Hero Section */
 .hero {
     text-align: center;
-    padding: 100px 20px 50px; /* Ensure content is centered and not too close to edges */
+    padding: 120px 20px 50px; /* Adjusted padding for spacing */
     background: #f8f8f8;
 }
 
@@ -119,6 +127,7 @@ body {
     padding: 50px 20px;
     background: #fff;
     text-align: center;
+    flex-wrap: wrap; /* Ensures responsiveness */
 }
 
 .feature-box {
@@ -128,6 +137,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
+    margin-bottom: 30px; /* Added margin to avoid crowding */
 }
 
 .feature-box:hover {
