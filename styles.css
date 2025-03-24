@@ -12,7 +12,8 @@ body {
 header {
     display: flex;
     justify-content: space-between;
-    padding: 20px 50px;
+    align-items: center;
+    padding: 15px 50px;
     background-color: rgba(20, 20, 20, 0.8);
     backdrop-filter: blur(10px);
     position: fixed;
@@ -31,6 +32,8 @@ nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
+    padding: 0;
+    margin: 0;
 }
 
 nav a {
@@ -58,27 +61,31 @@ nav a:hover {
     background: #8b4de6;
 }
 
-/* Hero Section */
+/* Hero Section (Full Screen) */
 .hero {
-    height: 100vh;
+    height: 100vh; /* Full height */
     background: url('https://source.unsplash.com/1600x900/?technology,dark') no-repeat center;
     background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 20px;
 }
 
 .hero-content {
-    text-align: center;
+    max-width: 800px;
 }
 
 .hero h1 {
     font-size: 3rem;
+    margin-bottom: 10px;
 }
 
 .hero p {
     font-size: 1.2rem;
     opacity: 0.8;
+    margin-bottom: 20px;
 }
 
 .btn-glow {
@@ -88,33 +95,6 @@ nav a:hover {
 
 .btn-glow:hover {
     box-shadow: 0px 0px 20px #a855f7;
-}
-
-/* Features */
-.features {
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    padding: 100px 20px;
-}
-
-.feature {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    width: 250px;
-    transition: 0.4s;
-}
-
-.feature i {
-    font-size: 3rem;
-    color: #a855f7;
-    margin-bottom: 10px;
-}
-
-.feature:hover {
-    transform: translateY(-10px);
 }
 
 /* Footer */
