@@ -38,16 +38,21 @@ header {
     z-index: 999;
 }
 
+/* Logo */
 .logo {
     font-size: 22px;
     color: #a855f7;
     font-weight: bold;
+    margin-right: auto; /* To ensure it stays on the left */
 }
 
+/* Navigation Links */
 nav ul {
     list-style: none;
     display: flex;
     gap: 25px;
+    margin: 0;
+    padding: 0;
 }
 
 nav ul li {
@@ -65,6 +70,7 @@ nav ul li a:hover {
     color: #a855f7;
 }
 
+/* Button */
 .btn {
     background: #a855f7;
     padding: 8px 15px;
@@ -81,5 +87,87 @@ nav ul li a:hover {
 
 /* Push Page Content Down (Avoid Overlapping) */
 body {
-    margin-top: 80px; /* Adjusted for announcement & nav bar */
+    margin-top: 100px; /* Adjusted for announcement & nav bar */
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 100px 20px 50px; /* Ensure content is centered and not too close to edges */
+    background: #f8f8f8;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.hero .btn {
+    font-size: 18px;
+    padding: 12px 30px;
+}
+
+/* Feature Section */
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.feature-box {
+    width: 250px;
+    padding: 30px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.feature-box:hover {
+    transform: translateY(-10px);
+}
+
+.feature-box i {
+    font-size: 40px;
+    color: #a855f7;
+    margin-bottom: 20px;
+}
+
+.feature-box h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.feature-box p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.feature-btn {
+    background: #a855f7;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.feature-btn:hover {
+    background: #8b4de6;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
