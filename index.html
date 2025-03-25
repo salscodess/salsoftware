@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meteor Shower</title>
+    <link rel="icon" href="ico.png" type="image/png">
     <style>
         body {
             margin: 0;
@@ -111,12 +112,12 @@
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
             z-index: 1;
             position: absolute;
-            top: 50%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             user-select: none;
             pointer-events: none;
-            text-align: center; /* Add this line */
+            text-align: center;
             width: 100%;
         }
 
@@ -312,6 +313,114 @@
         .popup .close-button:hover {
             opacity: 1;
         }
+
+        #software-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 60px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 80vh;
+            z-index: 2;
+        }
+
+        .software-box {
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            width: 350px;
+            height: auto;
+            padding: 30px;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 2px solid #9333ea;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .software-box:hover {
+            background-color: #3b3b3b;
+            transform: scale(1.03);
+        }
+
+        .software-box h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .software-box p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .software-box ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .software-box ul li {
+            margin-bottom: 10px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .software-box ul li::before {
+            content: '•';
+            color: #9333ea;
+            margin-right: 10px;
+        }
+
+        .software-box button {
+            padding: 15px 30px;
+            background-color: #9333ea;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .software-box button:hover {
+            background-color: #7e22ce;
+            transform: scale(1.05);
+        }
+
+        /* Add unique animations for each box */
+        .software-box:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        .software-box:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        .software-box:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        .software-box:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -367,6 +476,57 @@
             <h3>More</h3>
             <p>View more resources.</p>
             <button >View More</button>
+        </div>
+    </section>
+
+    <section id="software-showcase">
+        <div class="software-box">
+            <h3>Software Product 1</h3>
+            <p>
+                Description of Software Product 1.  This software is designed to help you with your daily tasks and improve your productivity.
+            </p>
+            <ul>
+                <li>Feature 1:  Description of Feature 1.</li>
+                <li>Feature 2:  Description of Feature 2.</li>
+                <li>Feature 3:  Description of Feature 3.</li>
+            </ul>
+            <a href="software.online"><button>Learn More</button></a>
+        </div>
+        <div class="software-box">
+            <h3>Software Product 2</h3>
+            <p>
+               Description of Software Product 2.  This software is designed for creative professionals and provides a suite of tools for design and media creation.
+            </p>
+            <ul>
+                <li>Feature A: Description of Feature A.</li>
+                <li>Feature B: Description of Feature B.</li>
+                <li>Feature C: Description of Feature C.</li>
+            </ul>
+            <a href="software.online"><button>Learn More</button></a>
+        </div>
+        <div class="software-box">
+            <h3>Software Product 3</h3>
+            <p>
+                Description of Software Product 3. This software is a powerful tool for data analysis and visualization, helping you to make informed decisions.
+            </p>
+            <ul>
+                <li>Feature X: Data Analysis Tools</li>
+                <li>Feature Y: Interactive Visualizations</li>
+                <li>Feature Z: Reporting and Exporting</li>
+            </ul>
+            <a href="software.online"><button>Learn More</button></a>
+        </div>
+        <div class="software-box">
+            <h3>Software Product 4</h3>
+            <p>
+                Description of Software Product 4.  A cutting-edge communication platform designed to connect teams and streamline collaboration.
+            </p>
+            <ul>
+                <li>Instant Messaging</li>
+                <li>Video Conferencing</li>
+                <li>File Sharing</li>
+            </ul>
+            <a href="software.online"><button>Learn More</button></a>
         </div>
     </section>
 
