@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parkcant Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS for animations and more complex effects (consider moving to a separate CSS file for larger projects) */
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .shake {
+          animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+          0% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          50% { transform: translateX(5px); }
+          75% { transform: translateX(-5px); }
+          100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-950 font-inter">
+    <header class="py-6 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black/90 to-transparent backdrop-blur-md sticky top-0 z-50 border-b border-white/10">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket w-8 h-8 text-blue-500"><path d="M13.5 15.5a4 4 0 1 0-7 0 4 4 0 0 0 7 0z"/><path d="M18.5 6.5 10 15v8l-2-2"/><path d="M6 17v-4c0-1.6 1.3-3 3-3h7"/></svg>
+                <h1 class="text-2xl font-bold text-white">parkcant.com</h1>
+            </div>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li>
+                        <a href="#featured" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shirt w-4 h-4"><path d="M4 9v-1a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1"/><path d="M2 9H22"/><path d="M10 14v-4"/><path d="M14 14v-4"/></svg>
+                            Shop
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2 w-4 h-4"><path d="M10 20H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h4"/><path d="M14 20h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4"/><path d="M12 14v6"/><path d="M8 18h2"/><path d="M14 18h2"/></svg>
+                            About
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300 flex items-center gap-1">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="featured" class="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black to-gray-900">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-8 text-center flex items-center justify-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-6 h-6 text-yellow-400"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    Featured Products
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-6 h-6 text-yellow-400"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white/5 backdrop-blur-md rounded-xl p-6 shadow-lg border border-white/10 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 slide-in">
+                        <div class="relative">
+                            <img src="/placeholder-shirt.png" alt="Parkcant OG Tee" class="w-full h-64 object-contain rounded-md mb-4" />
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Parkcant OG Tee</h3>
+                        <p class="text-gray-300 mb-4">The classic Parkcant tee, perfect for repping your favorite Rocket League content creator.</p>
+                        <p class="text-lg font-bold text-yellow-400 mb-4">$25.00</p>
+                        <div class="flex items-center justify-between">
+                            <button class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-3 rounded-full transition-all duration-300 hover:from-blue-600 hover:to-purple-600 hover:shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart w-4 h-4 mr-2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M8 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md rounded-xl p-6 shadow-lg border border-white/10 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 slide-in">
+                        <div class="relative">
+                            <img src="/placeholder-shirt.png" alt="Boost Tee" class="w-full h-64 object-contain rounded-md mb-4" />
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Boost Tee</h3>
+                        <p class="text-gray-300 mb-4">Feel the speed with this Boost-inspired design.</p>
+                        <p class="text-lg font-bold text-yellow-400 mb-4">$30.00</p>
+                        <div class="flex items-center justify-between">
+                            <button class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-3 rounded-full transition-all duration-300 hover:from-blue-600 hover:to-purple-600 hover:shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart w-4 h-4 mr-2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M8 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md rounded-xl p-6 shadow-lg border border-white/10 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 slide-in">
+                        <div class="relative">
+                            <img src="/placeholder-shirt.png" alt="Goal Tee" class="w-full h-64 object-contain rounded-md mb-4" />
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Goal Tee</h3>
+                        <p class="text-gray-300 mb-4">Score big with this iconic Goal design.</p>
+                        <p class="text-lg font-bold text-yellow-400 mb-4">$28.00</p>
+                        <div class="flex items-center justify-between">
+                            <button class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-3 rounded-full transition-all duration-300 hover:from-blue-600 hover:to-purple-600 hover:shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart w-4 h-4 mr-2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M8 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative fade-in">
+                    <div class="w-full aspect-w-16 aspect-h-9 bg-black rounded-xl shadow-lg border border-white/10 flex items-center justify-center">
+                        <p class="text-white/50 text-center">Rocket League Gameplay Video</p>
+                    </div>
+                    <div class="absolute bottom-6 left-6 bg-blue-500/80 backdrop-blur-md text-white px-4 py-2 rounded-full shadow-md flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2 w-5 h-5"><path d="M10 20H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h4"/><path d="M14 20h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4"/><path d="M12 14v6"/><path d="M8 18h2"/><path d="M14 18h2"/></svg>
+                        Rocket League Highlights
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold text-white">About Parkcant</h2>
+                    <p class="text-gray-300 text-lg">
+                        Hey there! I'm Parkcant, a Rocket League content creator. I'm passionate about creating
+                        exciting and engaging content for the Rocket League community. This store is an extension of that passion,
+                        offering you a way to support the content you love and represent the community in style.
+                    </p>
+                    <p class="text-gray-300 text-lg">
+                        Each design is inspired by iconic elements of Rocket League, from the thrill of the boost to the
+                        excitement of scoring a goal. I hope you enjoy wearing these shirts as much as I enjoy creating
+                        the content. Thank you for being a part of this community!
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://www.youtube.com/c/Parkcant" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors duration-300 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rocket w-5 h-5"><path d="M13.5 15.5a4 4 0 1 0-7 0 4 4 0 0 0 7 0z"/><path d="M18.5 6.5 10 15v8l-2-2"/><path d="M6 17v-4c0-1.6 1.3-3 3-3h7"/></svg>
+                            Check out my YouTube
+                        </a>
+                        <a href="https://www.twitch.tv/parkcant" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 rounded-full hover:from-blue-600 hover:to-cyan-600 transition-colors duration-300 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2 w-5 h-5"><path d="M10 20H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h4"/><path d="M14 20h4a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4"/><path d="M12 14v6"/><path d="M8 18h2"/><path d="M14 18h2"/></svg>
+                            Watch me on Twitch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-950">
+            <div class="container mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-8 text-center">Contact Me</h2>
+                <div class="max-w-2xl mx-auto">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-300">
+                                Name
+                            </label>
+                            <input type="text" id="name" name="name" required
+                                class="mt-1 p-3 w-full rounded-md bg-black/20 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Your Name" />
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300">
+                                Email
+                            </label>
+                            <input type="email" id="email" name="email" required
+                                class="mt-1 p-3 w-full rounded-md bg-black/20 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="you@example.com" />
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300">
+                                Message
+                            </label>
+                            <textarea id="message" name="message" required rows="4"
+                                class="mt-1 p-3 w-full rounded-md bg-black/20 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Your message..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold py-3 rounded-full transition-all duration-300 hover:from-green-600 hover:to-teal-600 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" id="submit-button">
+                            Send Message
+                        </button>
+                        <p id="form-status" class="text-center"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="py-8 px-4 sm:px-6 lg:px-8 bg-black/80 backdrop-blur-md border-t border-white/10">
+        <div class="container mx-auto text-center text-gray-400">
+            © 2024 parkcant.com. All rights reserved. This store is not affiliated with Psyonix LLC.
+        </div>
+    </footer>
+
+    <script>
+    const contactForm = document.getElementById('contact-form');
+    const submitButton = document.getElementById('submit-button');
+    const formStatus = document.getElementById('form-status');
+
+    contactForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(contactForm);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const message = formData.get('message');
+
+        if (!name || !email || !message) {
+            formStatus.textContent = "Please fill in all fields.";
+            formStatus.className = "text-red-400 text-center shake";
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Sending...";
+        submitButton.classList.add('opacity-50', 'cursor-not-allowed', 'pulse');
+        formStatus.textContent = "";
+        formStatus.className = "";
+
+        try {
+            // Simulate an API call (replace with your actual backend endpoint)
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            console.log('Form Data:', { name, email, message });
+
+            // Simulate success
+            formStatus.textContent = "Message sent successfully!";
+            formStatus.className = "text-green-400 text-center";
+            contactForm.reset();
+
+        } catch (error) {
+            console.error('Form submission failed:', error);
+            formStatus.textContent = "Failed to send message. Please try again.";
+            formStatus.className = "text-red-400 text-center shake";
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Send Message";
+            submitButton.classList.remove('opacity-50', 'cursor-not-allowed', 'pulse');
+        }
+    });
+    </script>
+</body>
+</html>
