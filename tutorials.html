@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sals Software Tutorials</title>
+    <link rel="icon" href="ico.png" type="image/png">
+    <link rel="shortcut icon" href="ico.png" type="image/png">
+ <style>
+        body {
+            margin: 0;
+            overflow: auto;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            scroll-behavior: smooth;
+        }
+        #meteor-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        #announcement-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 16px;
+            z-index: 10;
+            overflow: hidden;
+        }
+        #announcement-bar-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: rotateText 15s linear infinite;
+            transform-origin: 50% 50%;
+        }
+        @keyframes rotateText {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        #nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 16px;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            top: 36px;
+        }
+        #nav-bar-left {
+            margin-left: 20px;
+            color: #9333ea;
+        }
+        #nav-bar-right {
+            margin-right: 20px;
+            display: flex;
+        }
+        #nav-bar-right button {
+            color: white;
+            text-decoration: none;
+            margin-left: 10px;
+            margin-right: 10px;
+            padding: 8px 16px;
+            border: 1px solid grey;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            outline: none;
+            background-color: transparent;
+        }
+        #nav-bar-right button:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+        #page-title {
+            font-size: 90px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            z-index: 1;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            user-select: none;
+            pointer-events: none;
+            text-align: center;
+            width: 100%;
+        }
+        /* Page specific styles */
+        #main-content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+            z-index: 2;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 100vh;
+        }
+        #main-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease, slideInDown 1s ease;
+        }
+        #tutorial-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 40px;
+            padding: 60px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .tutorial-box {
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            width: 350px;
+            padding: 30px;
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 2px solid #9333ea;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .tutorial-box:hover {
+            background-color: #3b3b3b;
+            transform: scale(1.03);
+        }
+        .tutorial-box h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .tutorial-box p {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            text-align: left;
+            flex-grow: 1;
+        }
+        .tutorial-box button {
+            padding: 15px 30px;
+            background-color: #9333ea;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: auto;
+        }
+        .tutorial-box button:hover {
+            background-color: #7e22ce;
+            transform: scale(1.05);
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="announcement-bar">
+        <div id="announcement-bar-text"></div>
+    </div>
+    <div id="nav-bar">
+        <div id="nav-bar-left">Salsoftware</div>
+        <div id="nav-bar-right">
+            <a href="shop.html"><button>Shop</button></a>
+            <a href="software.html"><button>Software</button></a>
+            <a href="tutorials.html"><button>Tutorials</button></a>
+            <a href="Links.html"><button>Links</button></a>
+            <a href="Docs.html"><button>Docs</button>
+            <a href="login.html"><button>Login</button></a>
+        </div>
+    </div>
+    <h1 id="page-title">Tutorials</h1>
+    <canvas id="meteor-canvas"></canvas>
+    <section id="main-content">
+        <h2>Learn and Grow with Our Tutorials</h2>
+        <p>
+            Welcome to the Sals Software tutorials section. Here you will find guides and resources to help you get the most out of our software, learn new skills, and contribute to our open-source projects. Whether you are a beginner or an experienced developer, there is something here for you.
+        </p>
+    </section>
+    <section id="tutorial-list">
+        <div class="tutorial-box">
+            <h3>Getting Started with Brutify</h3>
+            <p>
+                This guide will walk you through the initial setup and basic usage of our brute-force tool, Brutify. Learn how to create your first dictionary attack and understand the results.
+            </p>
+            <a href="#"><button>Read More</button></a>
+        </div>
+        <div class="tutorial-box">
+            <h3>Advanced Configuration for X_X Xbox Access</h3>
+            <p>
+                Take your Xbox bot to the next level with this advanced tutorial. We'll cover custom configurations, secure proxy settings, and creating complex automated tasks.
+            </p>
+            <a href="#"><button>Read More</button></a>
+        </div>
+        <div class="tutorial-box">
+            <h3>Contributing to Our Open-Source Projects</h3>
+            <p>
+                Interested in joining our community? This guide provides a step-by-step process for forking our repositories, making your first pull request, and becoming a contributor.
+            </p>
+            <a href="#"><button>Read More</button></a>
+        </div>
+        <div class="tutorial-box">
+            <h3>Template Tutorial Title</h3>
+            <p>
+                This is a template for a new tutorial. Add your tutorial description here and provide helpful instructions for your users.
+            </p>
+            <a href="#"><button>Read More</button></a>
+        </div>
+    </section>
+    <script>
+        const canvas = document.getElementById('meteor-canvas');
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        ctx.scale(dpr, dpr);
+        const meteorCount = 200;
+        const meteors = [];
+        function initializeMeteors() {
+            for (let i = 0; i < meteorCount; i++) {
+                meteors.push({
+                    x: Math.random() * canvas.width / dpr,
+                    y: Math.random() * canvas.height / dpr,
+                    radius: Math.random() * 3 + 1,
+                    speed: Math.random() * 4 + 1,
+                    brightness: Math.random() * 0.5 + 0.5,
+                });
+            }
+        }
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width / dpr, canvas.height / dpr);
+            gradient.addColorStop(0, '#000000');
+            gradient.addColorStop(0.5, '#111111');
+            gradient.addColorStop(1, '#222222');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+            ctx.strokeStyle = 'rgba(128, 128, 128, 0.1)';
+            ctx.lineWidth = 1;
+            const stripeWidth = 15;
+            const stripeSpacing = 25;
+            for (let x = -canvas.width / dpr; x < canvas.width / dpr; x += stripeSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x + canvas.height / dpr, canvas.height / dpr);
+                ctx.stroke();
+                ctx.closePath();
+            }
+        }
+        function drawMeteors() {
+            meteors.forEach(meteor => {
+                meteor.x -= meteor.speed;
+                meteor.y += meteor.speed * 0.6;
+                if (meteor.x < -meteor.radius * 2 || meteor.y > canvas.height / dpr) {
+                    meteor.x = canvas.width / dpr + meteor.radius * 2;
+                    meteor.y = Math.random() * canvas.height / dpr;
+                }
+                ctx.beginPath();
+                ctx.arc(meteor.x, meteor.y, meteor.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${meteor.brightness})`;
+                ctx.fill();
+                ctx.closePath();
+            });
+        }
+        // Announcement Bar Text Rotation
+        const announcementText = document.getElementById('announcement-bar-text');
+        const messages = [
+            "Don't Miss Our HUGE Summer Sale!",
+            "Get 25% Off on All Items This Weekend Only!",
+            "Flash Sale Alert! 50% Off on Selected Items!",
+            "New Arrivals - Shop Now and Save 20%!",
+            "Limited Time Offer: Buy One Get One Free!"
+        ];
+        let messageIndex = 0;
+        function updateAnnouncementText() {
+            announcementText.textContent = messages[messageIndex];
+            messageIndex = (messageIndex + 1) % messages.length;
+        }
+        //initial call
+        updateAnnouncementText();
+        // Change the message every 3 seconds (3000 milliseconds)
+        setInterval(updateAnnouncementText, 3000);
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+            drawBackground();
+            drawMeteors();
+            requestAnimationFrame(animate);
+        }
+        initializeMeteors();animate();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+            initializeMeteors();
+        });
+    </script>
+</body>
+</html>
