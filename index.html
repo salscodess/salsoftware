@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tetris</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Tetris</h1>
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Score</div>
+          <div id="score" class="value">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Lines</div>
+          <div id="lines" class="value">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Level</div>
+          <div id="level" class="value">1</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="game-wrapper">
+        <canvas id="game" width="300" height="600" aria-label="Tetris board"></canvas>
+      </div>
+      <aside class="sidebar">
+        <div class="panel">
+          <h2>Controls</h2>
+          <ul>
+            <li>Move: Arrow Left/Right or A/D</li>
+            <li>Rotate: Arrow Up or W (CW)</li>
+            <li>Rotate CCW: Z or Q</li>
+            <li>Soft Drop: Arrow Down or S</li>
+            <li>Hard Drop: Space</li>
+            <li>Pause: P or Esc</li>
+          </ul>
+        </div>
+        <button id="pauseBtn" class="btn">Pause (P)</button>
+        <button id="restartBtn" class="btn secondary">Restart</button>
+      </aside>
+    </main>
+  </div>
+
+  <div id="overlay" class="overlay visible" role="dialog" aria-modal="true">
+    <div class="overlay-card">
+      <h2 id="overlayTitle">Tetris</h2>
+      <p id="overlaySubtitle">Clear lines by stacking blocks. Use arrow keys or WASD.</p>
+      <div class="overlay-actions">
+        <button id="startBtn" class="btn primary">Start Game</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
