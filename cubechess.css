@@ -1,0 +1,229 @@
+:root {
+  --bg: #0f1220;
+  --panel: #151933;
+  --text: #e7eaf6;
+  --muted: #a7adcf;
+  --accent: #61dafb;
+  --border: #323a7a;
+  --btn: #2a3070;
+  --btn-hover: #343c8b;
+  --danger: #c0392b;
+  --success: #27ae60;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: radial-gradient(1200px 800px at 10% -20%, #1a1e3f 0%, #0f1220 60%);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(21, 25, 51, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+
+.header h1 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-size: 24px;
+}
+
+.header-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.turn-indicator {
+  padding: 8px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.canvas-wrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 70px);
+}
+
+.controls-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(21, 25, 51, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 280px;
+  max-width: 320px;
+  z-index: 50;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.controls-panel h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.controls-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.controls-panel li {
+  margin: 4px 0;
+}
+
+.controls-panel strong {
+  color: var(--text);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: var(--btn);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn.primary {
+  background: linear-gradient(180deg, #3a7bd5, #2a5fb8);
+  border-color: #2a5fb8;
+}
+
+.btn.primary:hover {
+  background: linear-gradient(180deg, #4a8be5, #3a6fc8);
+}
+
+.btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.status-message {
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.check-warning {
+  background: rgba(192, 57, 43, 0.2);
+  border-color: var(--danger);
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(21, 25, 51, 0.98);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 32px 48px;
+  text-align: center;
+  z-index: 200;
+  box-shadow: 0 16px 64px rgba(0, 0, 0, 0.6);
+}
+
+.game-over h2 {
+  margin: 0 0 12px 0;
+  font-size: 32px;
+  color: var(--accent);
+}
+
+.game-over p {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.twist-controls {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.twist-controls h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.twist-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.twist-btn {
+  padding: 6px 10px;
+  font-size: 12px;
+  background: rgba(42, 48, 112, 0.6);
+}
+
+.twist-btn:hover {
+  background: rgba(52, 60, 139, 0.8);
+}
