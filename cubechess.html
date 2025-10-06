@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rubik's Cube Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./cubechess.css" />
+</head>
+<body>
+  <div id="app-root">
+    <div class="app-container">
+      <header class="header">
+        <h1>Rubik's Cube Simulator</h1>
+        <div class="header-info">
+          <div class="move-counter">
+            Moves: <span id="move-count">0</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <div class="cube-viewport" id="cube-viewport">
+          <div class="cube-3d-scene" id="cube-scene">
+            <div class="cube-container" id="cube-container"></div>
+          </div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="panel">
+            <h2>Face Rotations</h2>
+            <p class="control-info">Click to rotate faces clockwise (CW) or counter-clockwise (CCW)</p>
+            
+            <h3>Front & Back</h3>
+            <div class="face-buttons">
+              <button class="face-btn clockwise" data-face="front" data-dir="cw">
+                <span class="face-indicator" style="background: #ffffff"></span>
+                Front CW
+              </button>
+              <button class="face-btn counterclockwise" data-face="front" data-dir="ccw">
+                <span class="face-indicator" style="background: #ffffff"></span>
+                Front CCW
+              </button>
+              <button class="face-btn clockwise" data-face="back" data-dir="cw">
+                <span class="face-indicator" style="background: #ffff00"></span>
+                Back CW
+              </button>
+              <button class="face-btn counterclockwise" data-face="back" data-dir="ccw">
+                <span class="face-indicator" style="background: #ffff00"></span>
+                Back CCW
+              </button>
+            </div>
+
+            <h3>Right & Left</h3>
+            <div class="face-buttons">
+              <button class="face-btn clockwise" data-face="right" data-dir="cw">
+                <span class="face-indicator" style="background: #ff0000"></span>
+                Right CW
+              </button>
+              <button class="face-btn counterclockwise" data-face="right" data-dir="ccw">
+                <span class="face-indicator" style="background: #ff0000"></span>
+                Right CCW
+              </button>
+              <button class="face-btn clockwise" data-face="left" data-dir="cw">
+                <span class="face-indicator" style="background: #ff6600"></span>
+                Left CW
+              </button>
+              <button class="face-btn counterclockwise" data-face="left" data-dir="ccw">
+                <span class="face-indicator" style="background: #ff6600"></span>
+                Left CCW
+              </button>
+            </div>
+
+            <h3>Top & Bottom</h3>
+            <div class="face-buttons">
+              <button class="face-btn clockwise" data-face="top" data-dir="cw">
+                <span class="face-indicator" style="background: #0000ff"></span>
+                Top CW
+              </button>
+              <button class="face-btn counterclockwise" data-face="top" data-dir="ccw">
+                <span class="face-indicator" style="background: #0000ff"></span>
+                Top CCW
+              </button>
+              <button class="face-btn clockwise" data-face="bottom" data-dir="cw">
+                <span class="face-indicator" style="background: #00ff00"></span>
+                Bottom CW
+              </button>
+              <button class="face-btn counterclockwise" data-face="bottom" data-dir="ccw">
+                <span class="face-indicator" style="background: #00ff00"></span>
+                Bottom CCW
+              </button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Actions</h2>
+            <div class="action-buttons">
+              <button class="btn success" id="scramble-btn">
+                🎲 Scramble Cube
+              </button>
+              <button class="btn danger" id="reset-btn">
+                🔄 Reset Cube
+              </button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Instructions</h2>
+            <ul class="instructions">
+              <li><strong>Rotate Cube:</strong> Click and drag on the cube</li>
+              <li><strong>Twist Faces:</strong> Use the buttons above</li>
+              <li><strong>Scramble:</strong> Randomly shuffles the cube</li>
+              <li><strong>Reset:</strong> Returns cube to solved state</li>
+            </ul>
+            <div class="help-text">
+              Drag the cube to view it from different angles. Each face can be rotated clockwise or counter-clockwise.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./cubechess.js"></script>
+</body>
+</html>
