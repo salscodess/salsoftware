@@ -1,12 +1,32 @@
 /**
  * 3D Cube Chess - A chess game played on the faces of a 3D cube
+ * 
+ * @file cubechess.js
+ * @description Main game logic for 3D Cube Chess application
+ * @version 1.0.0
+ * 
  * Features:
- * - 3D rendered chess pieces using Three.js
- * - Legal move visualization
- * - Drag-and-drop piece movement
- * - Cube rotation and zoom controls
- * - AI opponent
- * - Rubik's Cube-inspired mechanics
+ * - 3D rendered chess pieces using Three.js with distinct geometries for each piece type
+ * - Legal move visualization with green circular indicators
+ * - Interactive piece selection and movement
+ * - Cube rotation with mouse drag and zoom with mouse wheel
+ * - Simple AI opponent that makes random legal moves
+ * - Turn-based gameplay with move counter
+ * - Sample visualization functionality
+ * 
+ * Technical Stack:
+ * - Three.js r128 for 3D graphics rendering
+ * - Vanilla JavaScript (ES6+)
+ * - WebGL for hardware-accelerated graphics
+ * 
+ * Chess Rules Implemented:
+ * - Standard FIDE chess piece movements
+ * - Piece capture mechanics
+ * - Turn alternation between white and black
+ * - Basic collision detection (pieces cannot move through others)
+ * 
+ * @author Salsoftware
+ * @see CUBECHESS_README.md for detailed documentation
  */
 
 (function() {
