@@ -315,15 +315,71 @@
     return { face: adj[0], row: adj[1], col: adj[2] };
   }
 
-  // Chess move validation with cross-face movement support
+  // Helper to get the next position in a direction (within face or crossing to adjacent face)
+  function getNextPosition(face, row, col, dRow, dCol) {
+    const newRow = row + dRow;
+    const newCol = col + dCol;
+    
+    // Still within the same face
+    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+      return { face, row: newRow, col: newCol };
+    }
+    
+    // Crossing to an adjacent face
+    let direction = null;
+    if (newRow < 0) direction = 'up';
+    else if (newRow >= 8) direction = 'down';
+    else if (newCol < 0) direction = 'left';
+    else if (newCol >= 8) direction = 'right';
+    
+    if (direction) {
+      return getAdjacentFacePosition(face, row, col, direction);
+    }
+    
+    return null;
+  }
+
+  // Get all positions along a path with collision detection
+  function getPathPositions(faces, startFace, startRow, startCol, dRow, dCol, maxSteps = 8) {
+    const positions = [];
+    let currentPos = { face: startFace, row: startRow, col: startCol };
+    
+    for (let step = 0; step < maxSteps; step++) {
+      const nextPos = getNextPosition(currentPos.face, currentPos.row, currentPos.col, dRow, dCol);
+      if (!nextPos) break;
+      
+      const piece = faces[nextPos.face][nextPos.row][nextPos.col];
+      
+      // Stop if we hit a piece
+      if (piece) {
+        // Can capture if different color
+        if (piece.color !== faces[startFace][startRow][startCol].color) {
+          positions.push(nextPos);
+        }
+        break;
+      }
+      
+      positions.push(nextPos);
+      currentPos = nextPos;
+      
+      // If we just crossed a face boundary, we need to recalculate the direction vector
+      // For now, continue in the same relative direction
+    }
+    
+    return positions;
+  }
+
+  // Chess move validation with cross-face movement support and collision detection
   function getValidMoves(faces, face, row, col) {
     const piece = faces[face][row][col];
     if (!piece) return [];
     const moves = [];
+    
     switch (piece.type) {
       case PIECES.PAWN: {
         const direction = piece.color === COLORS.WHITE ? -1 : 1;
         const newRow = row + direction;
+        
         // Forward move on same face
         if (newRow >= 0 && newRow < 8 && !faces[face][newRow][col]) {
           moves.push({ face, row: newRow, col });
@@ -335,6 +391,7 @@
             moves.push(adjPos);
           }
         }
+        
         // Diagonal captures on same face
         if (newRow >= 0 && newRow < 8) {
           if (col > 0 && faces[face][newRow][col - 1] &&
@@ -348,70 +405,153 @@
         }
         break;
       }
+      
       case PIECES.ROOK: {
-        for (let i = 0; i < 8; i++) {
-          if (i !== row) {
-            const target = faces[face][i][col];
-            if (!target || target.color !== piece.color) moves.push({ face, row: i, col });
-          }
-          if (i !== col) {
-            const target = faces[face][row][i];
-            if (!target || target.color !== piece.color) moves.push({ face, row, col: i });
-          }
+        // Move in 4 directions with collision detection and cross-face support
+        const directions = [
+          [-1, 0], // up
+          [1, 0],  // down
+          [0, -1], // left
+          [0, 1]   // right
+        ];
+        
+        for (const [dRow, dCol] of directions) {
+          moves.push(...getPathPositions(faces, face, row, col, dRow, dCol));
         }
-        // Add cross-face moves at edges
-        if (row === 0) {
-          const adjPos = getAdjacentFacePosition(face, row, col, 'up');
-          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] ||
-            faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
-            moves.push(adjPos);
-          }
+        break;
+      }
+      
+      case PIECES.BISHOP: {
+        // Move diagonally in 4 directions with collision detection
+        const directions = [
+          [-1, -1], // up-left
+          [-1, 1],  // up-right
+          [1, -1],  // down-left
+          [1, 1]    // down-right
+        ];
+        
+        for (const [dRow, dCol] of directions) {
+          moves.push(...getPathPositions(faces, face, row, col, dRow, dCol));
         }
-        if (row === 7) {
-          const adjPos = getAdjacentFacePosition(face, row, col, 'down');
-          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] ||
-            faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
-            moves.push(adjPos);
-          }
+        break;
+      }
+      
+      case PIECES.QUEEN: {
+        // Combination of rook and bishop moves
+        const directions = [
+          [-1, 0], [1, 0], [0, -1], [0, 1],  // rook moves
+          [-1, -1], [-1, 1], [1, -1], [1, 1]  // bishop moves
+        ];
+        
+        for (const [dRow, dCol] of directions) {
+          moves.push(...getPathPositions(faces, face, row, col, dRow, dCol));
         }
-        if (col === 0) {
-          const adjPos = getAdjacentFacePosition(face, row, col, 'left');
-          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] ||
-            faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
-            moves.push(adjPos);
-          }
-        }
-        if (col === 7) {
-          const adjPos = getAdjacentFacePosition(face, row, col, 'right');
-          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] ||
-            faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
-            moves.push(adjPos);
+        break;
+      }
+      
+      case PIECES.KNIGHT: {
+        // Knight moves in L-shape: 2 squares in one direction, 1 in perpendicular
+        const knightMoves = [
+          [-2, -1], [-2, 1], [-1, -2], [-1, 2],
+          [1, -2], [1, 2], [2, -1], [2, 1]
+        ];
+        
+        for (const [dRow, dCol] of knightMoves) {
+          const newRow = row + dRow;
+          const newCol = col + dCol;
+          
+          // Check if within same face
+          if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            const target = faces[face][newRow][newCol];
+            if (!target || target.color !== piece.color) {
+              moves.push({ face, row: newRow, col: newCol });
+            }
+          } else {
+            // Handle cross-face knight moves
+            const nextPos = getNextPosition(face, row, col, dRow, dCol);
+            if (nextPos) {
+              const target = faces[nextPos.face][nextPos.row][nextPos.col];
+              if (!target || target.color !== piece.color) {
+                moves.push(nextPos);
+              }
+            }
           }
         }
         break;
       }
-      case PIECES.KNIGHT:
-      // TODO: Implement cross-face knight moves
-      case PIECES.BISHOP:
-      // TODO: Implement cross-face bishop moves
-      case PIECES.QUEEN:
-      // TODO: Implement cross-face queen moves
-      case PIECES.KING:
-      // TODO: Implement cross-face king moves
+      
+      case PIECES.KING: {
+        // King moves one square in any direction
+        const directions = [
+          [-1, -1], [-1, 0], [-1, 1],
+          [0, -1],           [0, 1],
+          [1, -1],  [1, 0],  [1, 1]
+        ];
+        
+        for (const [dRow, dCol] of directions) {
+          const newRow = row + dRow;
+          const newCol = col + dCol;
+          
+          // Check if within same face
+          if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            const target = faces[face][newRow][newCol];
+            if (!target || target.color !== piece.color) {
+              moves.push({ face, row: newRow, col: newCol });
+            }
+          } else {
+            // Handle cross-face king moves
+            const nextPos = getNextPosition(face, row, col, dRow, dCol);
+            if (nextPos) {
+              const target = faces[nextPos.face][nextPos.row][nextPos.col];
+              if (!target || target.color !== piece.color) {
+                moves.push(nextPos);
+              }
+            }
+          }
+        }
         break;
+      }
     }
+    
     return moves;
   }
 
   // === Rotation System ===
 
+  // Animation state for slice rotations
+  let animationState = {
+    active: false,
+    progress: 0,
+    duration: 500, // milliseconds
+    type: null, // 'row' or 'column'
+    index: null,
+    clockwise: null,
+    startTime: null,
+    originalFaces: null
+  };
+
   function rotateRow(rowIndex, clockwise) {
-    if (gameState.aiThinking) return;
+    if (gameState.aiThinking || animationState.active) return;
+    
+    // Start animation
+    animationState = {
+      active: true,
+      progress: 0,
+      duration: 500,
+      type: 'row',
+      index: rowIndex,
+      clockwise: clockwise,
+      startTime: Date.now(),
+      originalFaces: deepClone(gameState.faces)
+    };
+    
+    // Perform the actual rotation (Rubik's cube style - 4 faces)
     const front = gameState.faces['front'];
     const back = gameState.faces['back'];
     const left = gameState.faces['left'];
     const right = gameState.faces['right'];
     const temp = [];
+    
     if (clockwise) {
       temp.push(...right[rowIndex]);
       right[rowIndex] = [...front[rowIndex]];
@@ -425,16 +565,32 @@
       right[rowIndex] = [...back[rowIndex]];
       back[rowIndex] = [...temp];
     }
-    drawCube();
+    
+    animateRotation();
   }
 
   function rotateColumn(colIndex, clockwise) {
-    if (gameState.aiThinking) return;
+    if (gameState.aiThinking || animationState.active) return;
+    
+    // Start animation
+    animationState = {
+      active: true,
+      progress: 0,
+      duration: 500,
+      type: 'column',
+      index: colIndex,
+      clockwise: clockwise,
+      startTime: Date.now(),
+      originalFaces: deepClone(gameState.faces)
+    };
+    
+    // Perform the actual rotation (Rubik's cube style - 4 faces with coordinate transformation for back)
     const front = gameState.faces['front'];
     const top = gameState.faces['top'];
     const back = gameState.faces['back'];
     const bottom = gameState.faces['bottom'];
     const temp = [];
+    
     if (clockwise) {
       for (let i = 0; i < 8; i++) temp.push(bottom[i][colIndex]);
       for (let i = 0; i < 8; i++) bottom[i][colIndex] = front[i][colIndex];
@@ -448,7 +604,53 @@
       for (let i = 0; i < 8; i++) bottom[i][colIndex] = back[7 - i][7 - colIndex];
       for (let i = 0; i < 8; i++) back[i][7 - colIndex] = temp[7 - i];
     }
+    
+    animateRotation();
+  }
+
+  function animateRotation() {
+    if (!animationState.active) return;
+    
+    const elapsed = Date.now() - animationState.startTime;
+    animationState.progress = Math.min(elapsed / animationState.duration, 1.0);
+    
+    // Easing function for smooth animation
+    const easeProgress = easeInOutCubic(animationState.progress);
+    
+    // Temporarily adjust rotation for visual feedback during animation
+    const rotationAmount = easeProgress * 90 * (animationState.clockwise ? 1 : -1);
+    
+    if (animationState.type === 'row') {
+      // Visual feedback: slightly rotate the view during row rotation
+      const originalRotY = gameState.rotationY;
+      gameState.rotationY = originalRotY + rotationAmount * 0.1;
+    } else if (animationState.type === 'column') {
+      // Visual feedback: slightly rotate the view during column rotation
+      const originalRotX = gameState.rotationX;
+      gameState.rotationX = originalRotX + rotationAmount * 0.1;
+    }
+    
     drawCube();
+    
+    if (animationState.progress < 1.0) {
+      requestAnimationFrame(animateRotation);
+    } else {
+      // Animation complete
+      animationState.active = false;
+      
+      // Reset view rotation after animation
+      if (animationState.type === 'row') {
+        gameState.rotationY -= 90 * (animationState.clockwise ? 1 : -1) * 0.1;
+      } else if (animationState.type === 'column') {
+        gameState.rotationX -= 90 * (animationState.clockwise ? 1 : -1) * 0.1;
+      }
+      
+      drawCube();
+    }
+  }
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
   // === UI Rendering and Controls ===
