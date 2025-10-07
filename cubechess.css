@@ -1,3 +1,15 @@
+:root {
+  --bg: #0f1220;
+  --panel: #151933;
+  --text: #e7eaf6;
+  --muted: #a7adcf;
+  --accent: #61dafb;
+  --accent-dark: #4db8d9;
+  --border: #323a7a;
+  --btn: #2a3070;
+  --btn-hover: #343c8b;
+}
+
 html, body {
   background: var(--bg);
   margin: 0;
