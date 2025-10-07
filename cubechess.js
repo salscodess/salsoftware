@@ -1,4 +1,21 @@
-/* 3D Cube Chess - Vanilla JS with Canvas 2D (Pseudo-3D) */
+/* 3D Cube Chess - Vanilla JS with Canvas 2D (Pseudo-3D) 
+ * 
+ * Features:
+ * - Cross-face chess piece movement: Pieces can transition between cube faces
+ * - Selective rotation: Rotate individual rows or columns instead of the entire cube
+ * - Mobile support: Touch controls, pinch-to-zoom, and responsive design
+ * - Collapsible menu: Hamburger menu on mobile for better screen utilization
+ * 
+ * Movement System:
+ * - Traditional chess rules apply within each face
+ * - Pieces at edge positions can move to adjacent faces based on direction
+ * - Face adjacency mapping maintains spatial continuity across the cube
+ * 
+ * Rotation Modes:
+ * - View Rotation: Rotate the entire cube view (default)
+ * - Row Rotation: Rotate a specific horizontal row across faces
+ * - Column Rotation: Rotate a specific vertical column across faces
+ */
 
 (function() {
   'use strict';
@@ -23,19 +40,19 @@
   
   // Game state
   let gameState = {
-    faces: {},
-    currentTurn: COLORS.WHITE,
-    selectedSquare: null,
-    possibleMoves: [],
-    inCheck: false,
-    gameOver: false,
-    aiThinking: false,
-    rotationX: -20,
-    rotationY: 45,
-    scale: 1.0,
-    dragStart: null,
-    rotationMode: 'view', // 'view', 'row', or 'column'
-    selectedRotationAxis: null
+    faces: {},                      // Chess board state for each cube face
+    currentTurn: COLORS.WHITE,      // Current player turn
+    selectedSquare: null,           // Currently selected square {face, row, col}
+    possibleMoves: [],              // Valid moves for selected piece
+    inCheck: false,                 // Whether current player's king is in check
+    gameOver: false,                // Game over flag
+    aiThinking: false,              // AI is processing a move
+    rotationX: -20,                 // View rotation angle around X axis
+    rotationY: 45,                  // View rotation angle around Y axis
+    scale: 1.0,                     // View zoom scale
+    dragStart: null,                // Mouse/touch drag start position
+    rotationMode: 'view',           // Rotation mode: 'view', 'row', or 'column'
+    selectedRotationAxis: null      // Selected row/column for selective rotation
   };
   
   // Canvas setup
@@ -330,6 +347,16 @@
   }
   
   // Helper function to get adjacent face and position when moving off an edge
+  // This enables pieces to transition seamlessly between cube faces
+  // Returns: { face, row, col } or null if invalid
+  // 
+  // Face adjacency map:
+  // - Front: connects to top (up), bottom (down), left (left), right (right)
+  // - Back: connects to top (up), bottom (down), right (left), left (right)
+  // - Top: connects to back (up), front (down), left (left), right (right)
+  // - Bottom: connects to front (up), back (down), left (left), right (right)
+  // - Left: connects to top (up), bottom (down), back (left), front (right)
+  // - Right: connects to top (up), bottom (down), front (left), back (right)
   function getAdjacentFacePosition(face, row, col, direction) {
     // direction: 'up', 'down', 'left', 'right'
     // Returns { face, row, col } or null if invalid
@@ -759,6 +786,10 @@
   }
   
   // Rotate a specific row across faces
+  // Moves pieces horizontally around the cube (through front, left, back, right faces)
+  // Parameters:
+  //   rowIndex: Row number (0-7) to rotate
+  //   clockwise: true for clockwise rotation, false for counter-clockwise
   function rotateRow(rowIndex, clockwise) {
     if (gameState.aiThinking) return;
     
@@ -797,6 +828,11 @@
   }
   
   // Rotate a specific column across faces
+  // Moves pieces vertically around the cube (through front, top, back, bottom faces)
+  // Parameters:
+  //   colIndex: Column number (0-7) to rotate
+  //   clockwise: true for clockwise rotation, false for counter-clockwise
+  // Note: Back face column indices are reversed to maintain spatial continuity
   function rotateColumn(colIndex, clockwise) {
     if (gameState.aiThinking) return;
     
@@ -993,6 +1029,7 @@
     });
     
     // Menu toggle for mobile
+    // Toggles the visibility of the controls panel on mobile devices
     const menuToggle = document.getElementById('menu-toggle');
     const controlsPanel = document.getElementById('controls-panel');
     menuToggle.addEventListener('click', () => {
@@ -1000,8 +1037,11 @@
     });
     
     // Mouse/Touch event handlers
+    // Unified event handling for both mouse and touch inputs
+    // Supports pinch-to-zoom on touch devices
     let touchStartDistance = 0;
     
+    // Get coordinates from mouse or touch event
     const getEventCoords = (event) => {
       if (event.touches) {
         return { x: event.touches[0].clientX, y: event.touches[0].clientY };
@@ -1009,6 +1049,7 @@
       return { x: event.clientX, y: event.clientY };
     };
     
+    // Handle pointer down (mouse click or touch start)
     const handlePointerDown = (event) => {
       if (event.touches && event.touches.length === 2) {
         // Pinch zoom start
