@@ -24,6 +24,7 @@ html, body {
   color: var(--text);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #root {
@@ -43,32 +44,62 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  padding: 12px 16px;
   background: rgba(21, 25, 51, 0.8);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
+  gap: 12px;
 }
 
 .header h1 {
   margin: 0;
   font-weight: 800;
   letter-spacing: 0.5px;
-  font-size: 24px;
+  font-size: 20px;
+  flex: 1;
+  text-align: center;
 }
 
 .header-info {
   display: flex;
-  gap: 20px;
+  gap: 12px;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .turn-indicator {
-  padding: 8px 16px;
+  padding: 6px 12px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 8px;
+  white-space: nowrap;
+}
+
+/* Hamburger Menu Toggle */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+}
+
+.menu-toggle span {
+  width: 100%;
+  height: 3px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle:hover span {
+  background: var(--accent);
 }
 
 .canvas-wrapper {
@@ -76,6 +107,16 @@ html, body {
   position: relative;
   width: 100%;
   height: calc(100vh - 70px);
+  touch-action: none;
+}
+
+#cubeCanvas {
+  cursor: grab;
+  touch-action: none;
+}
+
+#cubeCanvas:active {
+  cursor: grabbing;
 }
 
 .controls-panel {
@@ -91,6 +132,9 @@ html, body {
   max-width: 320px;
   z-index: 50;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 .controls-panel h3 {
@@ -98,6 +142,13 @@ html, body {
   font-size: 18px;
   font-weight: 600;
   color: var(--accent);
+}
+
+.controls-panel h4 {
+  margin: 8px 0 6px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .controls-panel ul {
@@ -117,6 +168,67 @@ html, body {
   color: var(--text);
 }
 
+.controls-panel label {
+  display: block;
+  margin: 8px 0 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.controls-panel input[type="number"] {
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.rotation-controls {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.rotation-mode-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.rotation-mode-selector label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.rotation-mode-selector label:hover {
+  background: rgba(42, 48, 112, 0.3);
+}
+
+.rotation-mode-selector input[type="radio"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.rotation-mode-selector span {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.rotation-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -132,6 +244,7 @@ html, body {
   transition: background 0.15s ease, transform 0.05s ease;
   font-size: 14px;
   font-family: inherit;
+  white-space: nowrap;
 }
 
 .btn:hover {
@@ -206,12 +319,6 @@ html, body {
   border-top: 1px solid var(--border);
 }
 
-.twist-controls h4 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: var(--text);
-}
-
 .twist-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -226,4 +333,91 @@ html, body {
 
 .twist-btn:hover {
   background: rgba(52, 60, 139, 0.8);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .header h1 {
+    font-size: 18px;
+  }
+  
+  .header-info {
+    font-size: 11px;
+  }
+  
+  .turn-indicator {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  
+  .controls-panel {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    max-width: 100%;
+    min-width: 100%;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid var(--border);
+    max-height: calc(100vh - 60px);
+    transform: translateY(100%);
+    padding: 20px;
+  }
+  
+  .controls-panel.open {
+    transform: translateY(0);
+  }
+  
+  .controls-panel h3 {
+    font-size: 20px;
+  }
+  
+  .btn {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .canvas-wrapper {
+    height: calc(100vh - 60px);
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px 12px;
+  }
+  
+  .header h1 {
+    font-size: 16px;
+  }
+  
+  .controls-panel h3 {
+    font-size: 18px;
+  }
+  
+  .controls-panel ul {
+    font-size: 12px;
+  }
+}
+
+/* Landscape mode for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .controls-panel {
+    max-height: calc(100vh - 50px);
+    padding: 12px;
+  }
+  
+  .header {
+    padding: 6px 12px;
+  }
+  
+  .canvas-wrapper {
+    height: calc(100vh - 50px);
+  }
 }

@@ -33,7 +33,9 @@
     rotationX: -20,
     rotationY: 45,
     scale: 1.0,
-    dragStart: null
+    dragStart: null,
+    rotationMode: 'view', // 'view', 'row', or 'column'
+    selectedRotationAxis: null
   };
   
   // Canvas setup
@@ -327,7 +329,25 @@
     canvas.clickableSquares = clickableSquares;
   }
   
-  // Chess move validation
+  // Helper function to get adjacent face and position when moving off an edge
+  function getAdjacentFacePosition(face, row, col, direction) {
+    // direction: 'up', 'down', 'left', 'right'
+    // Returns { face, row, col } or null if invalid
+    const adjacency = {
+      'front': { up: ['top', 7, col], down: ['bottom', 0, col], left: ['left', row, 7], right: ['right', row, 0] },
+      'back': { up: ['top', 0, 7 - col], down: ['bottom', 7, 7 - col], left: ['right', row, 7], right: ['left', row, 0] },
+      'right': { up: ['top', row, 7], down: ['bottom', row, 7], left: ['front', row, 7], right: ['back', row, 7] },
+      'left': { up: ['top', row, 0], down: ['bottom', row, 0], left: ['back', row, 0], right: ['front', row, 0] },
+      'top': { up: ['back', 0, 7 - col], down: ['front', 0, col], left: ['left', 0, col], right: ['right', 0, col] },
+      'bottom': { up: ['front', 7, col], down: ['back', 7, 7 - col], left: ['left', 7, col], right: ['right', 7, col] }
+    };
+    
+    const adj = adjacency[face]?.[direction];
+    if (!adj) return null;
+    return { face: adj[0], row: adj[1], col: adj[2] };
+  }
+
+  // Chess move validation with cross-face movement support
   function getValidMoves(faces, face, row, col) {
     const piece = faces[face][row][col];
     if (!piece) return [];
@@ -339,10 +359,19 @@
         const direction = piece.color === COLORS.WHITE ? -1 : 1;
         const newRow = row + direction;
         
+        // Forward move on same face
         if (newRow >= 0 && newRow < 8 && !faces[face][newRow][col]) {
           moves.push({ face, row: newRow, col });
+        } else if (newRow < 0 || newRow >= 8) {
+          // Try to move to adjacent face
+          const dir = newRow < 0 ? 'up' : 'down';
+          const adjPos = getAdjacentFacePosition(face, row, col, dir);
+          if (adjPos && !faces[adjPos.face][adjPos.row][adjPos.col]) {
+            moves.push(adjPos);
+          }
         }
         
+        // Diagonal captures on same face
         if (newRow >= 0 && newRow < 8) {
           if (col > 0 && faces[face][newRow][col - 1] && 
               faces[face][newRow][col - 1].color !== piece.color) {
@@ -356,6 +385,7 @@
         break;
         
       case PIECES.ROOK:
+        // Vertical and horizontal moves on same face
         for (let i = 0; i < 8; i++) {
           if (i !== row) {
             const target = faces[face][i][col];
@@ -368,6 +398,36 @@
             if (!target || target.color !== piece.color) {
               moves.push({ face, row, col: i });
             }
+          }
+        }
+        
+        // Add cross-face moves at edges
+        if (row === 0) {
+          const adjPos = getAdjacentFacePosition(face, row, col, 'up');
+          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] || 
+              faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
+            moves.push(adjPos);
+          }
+        }
+        if (row === 7) {
+          const adjPos = getAdjacentFacePosition(face, row, col, 'down');
+          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] || 
+              faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
+            moves.push(adjPos);
+          }
+        }
+        if (col === 0) {
+          const adjPos = getAdjacentFacePosition(face, row, col, 'left');
+          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] || 
+              faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
+            moves.push(adjPos);
+          }
+        }
+        if (col === 7) {
+          const adjPos = getAdjacentFacePosition(face, row, col, 'right');
+          if (adjPos && (!faces[adjPos.face][adjPos.row][adjPos.col] || 
+              faces[adjPos.face][adjPos.row][adjPos.col].color !== piece.color)) {
+            moves.push(adjPos);
           }
         }
         break;
@@ -698,6 +758,82 @@
     animate();
   }
   
+  // Rotate a specific row across faces
+  function rotateRow(rowIndex, clockwise) {
+    if (gameState.aiThinking) return;
+    
+    // For simplicity, rotate the row on the front face horizontally
+    const front = gameState.faces['front'];
+    const back = gameState.faces['back'];
+    const left = gameState.faces['left'];
+    const right = gameState.faces['right'];
+    
+    const temp = [];
+    if (clockwise) {
+      // Save right row
+      temp.push(...right[rowIndex]);
+      // Right <- Front
+      right[rowIndex] = [...front[rowIndex]];
+      // Front <- Left
+      front[rowIndex] = [...left[rowIndex]];
+      // Left <- Back
+      left[rowIndex] = [...back[rowIndex]];
+      // Back <- Temp (right)
+      back[rowIndex] = [...temp];
+    } else {
+      // Save left row
+      temp.push(...left[rowIndex]);
+      // Left <- Front
+      left[rowIndex] = [...front[rowIndex]];
+      // Front <- Right
+      front[rowIndex] = [...right[rowIndex]];
+      // Right <- Back
+      right[rowIndex] = [...back[rowIndex]];
+      // Back <- Temp (left)
+      back[rowIndex] = [...temp];
+    }
+    
+    drawCube();
+  }
+  
+  // Rotate a specific column across faces
+  function rotateColumn(colIndex, clockwise) {
+    if (gameState.aiThinking) return;
+    
+    // Rotate column across front, top, back, bottom faces
+    const front = gameState.faces['front'];
+    const top = gameState.faces['top'];
+    const back = gameState.faces['back'];
+    const bottom = gameState.faces['bottom'];
+    
+    const temp = [];
+    if (clockwise) {
+      // Save bottom column
+      for (let i = 0; i < 8; i++) temp.push(bottom[i][colIndex]);
+      // Bottom <- Front
+      for (let i = 0; i < 8; i++) bottom[i][colIndex] = front[i][colIndex];
+      // Front <- Top
+      for (let i = 0; i < 8; i++) front[i][colIndex] = top[i][colIndex];
+      // Top <- Back (reversed)
+      for (let i = 0; i < 8; i++) top[i][colIndex] = back[7 - i][7 - colIndex];
+      // Back <- Temp (reversed)
+      for (let i = 0; i < 8; i++) back[i][7 - colIndex] = temp[7 - i];
+    } else {
+      // Save top column
+      for (let i = 0; i < 8; i++) temp.push(top[i][colIndex]);
+      // Top <- Front
+      for (let i = 0; i < 8; i++) top[i][colIndex] = front[i][colIndex];
+      // Front <- Bottom
+      for (let i = 0; i < 8; i++) front[i][colIndex] = bottom[i][colIndex];
+      // Bottom <- Back (reversed)
+      for (let i = 0; i < 8; i++) bottom[i][colIndex] = back[7 - i][7 - colIndex];
+      // Back <- Temp (reversed)
+      for (let i = 0; i < 8; i++) back[i][7 - colIndex] = temp[7 - i];
+    }
+    
+    drawCube();
+  }
+  
   // Update UI
   function updateUI() {
     const turnText = gameState.currentTurn === COLORS.WHITE ? 'White (You)' : 'Black (AI)';
@@ -744,6 +880,11 @@
     root.innerHTML = `
       <div class="game-container">
         <div class="header">
+          <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
           <h1>3D Cube Chess</h1>
           <div class="header-info">
             <div class="turn-indicator">Turn: White (You)</div>
@@ -751,15 +892,48 @@
         </div>
         <div class="canvas-wrapper">
           <canvas id="cubeCanvas"></canvas>
-          <div class="controls-panel">
+          <div class="controls-panel" id="controls-panel">
             <h3>Controls</h3>
             <ul>
               <li><strong>Rotate View:</strong> Click + drag</li>
-              <li><strong>Zoom:</strong> Scroll wheel</li>
-              <li><strong>Select Piece:</strong> Click on piece</li>
-              <li><strong>Move:</strong> Click on green square</li>
+              <li><strong>Zoom:</strong> Scroll wheel / Pinch</li>
+              <li><strong>Select Piece:</strong> Click/Tap on piece</li>
+              <li><strong>Move:</strong> Click/Tap on green square</li>
             </ul>
             <div class="status-message" style="display: none;"></div>
+            <div class="rotation-controls">
+              <h4>Selective Rotation</h4>
+              <div class="rotation-mode-selector">
+                <label>
+                  <input type="radio" name="rotationMode" value="view" checked>
+                  <span>View Rotation</span>
+                </label>
+                <label>
+                  <input type="radio" name="rotationMode" value="row">
+                  <span>Rotate Row</span>
+                </label>
+                <label>
+                  <input type="radio" name="rotationMode" value="column">
+                  <span>Rotate Column</span>
+                </label>
+              </div>
+              <div id="row-rotation-controls" style="display: none;">
+                <label for="row-select">Select Row (0-7):</label>
+                <input type="number" id="row-select" min="0" max="7" value="0">
+                <div class="rotation-buttons">
+                  <button class="btn" id="rotate-row-cw">Rotate CW</button>
+                  <button class="btn" id="rotate-row-ccw">Rotate CCW</button>
+                </div>
+              </div>
+              <div id="column-rotation-controls" style="display: none;">
+                <label for="col-select">Select Column (0-7):</label>
+                <input type="number" id="col-select" min="0" max="7" value="0">
+                <div class="rotation-buttons">
+                  <button class="btn" id="rotate-col-cw">Rotate CW</button>
+                  <button class="btn" id="rotate-col-ccw">Rotate CCW</button>
+                </div>
+              </div>
+            </div>
             <div class="twist-controls" style="display: none;">
               <h4>Rubik's Twist (Your Move)</h4>
               <div class="twist-buttons">
@@ -779,25 +953,143 @@
     ctx = canvas.getContext('2d');
     
     // Set canvas size
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - 70;
+    const updateCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight - 70;
+    };
+    updateCanvasSize();
     
     // Initialize game
     gameState.faces = createCubeFaces();
     
+    // Rotation mode selector
+    const rotationModeInputs = document.querySelectorAll('input[name="rotationMode"]');
+    rotationModeInputs.forEach(input => {
+      input.addEventListener('change', (e) => {
+        gameState.rotationMode = e.target.value;
+        document.getElementById('row-rotation-controls').style.display = 
+          gameState.rotationMode === 'row' ? 'block' : 'none';
+        document.getElementById('column-rotation-controls').style.display = 
+          gameState.rotationMode === 'column' ? 'block' : 'none';
+      });
+    });
+    
+    // Row/Column rotation controls
+    document.getElementById('rotate-row-cw')?.addEventListener('click', () => {
+      const row = parseInt(document.getElementById('row-select').value);
+      rotateRow(row, true);
+    });
+    document.getElementById('rotate-row-ccw')?.addEventListener('click', () => {
+      const row = parseInt(document.getElementById('row-select').value);
+      rotateRow(row, false);
+    });
+    document.getElementById('rotate-col-cw')?.addEventListener('click', () => {
+      const col = parseInt(document.getElementById('col-select').value);
+      rotateColumn(col, true);
+    });
+    document.getElementById('rotate-col-ccw')?.addEventListener('click', () => {
+      const col = parseInt(document.getElementById('col-select').value);
+      rotateColumn(col, false);
+    });
+    
+    // Menu toggle for mobile
+    const menuToggle = document.getElementById('menu-toggle');
+    const controlsPanel = document.getElementById('controls-panel');
+    menuToggle.addEventListener('click', () => {
+      controlsPanel.classList.toggle('open');
+    });
+    
+    // Mouse/Touch event handlers
+    let touchStartDistance = 0;
+    
+    const getEventCoords = (event) => {
+      if (event.touches) {
+        return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+      }
+      return { x: event.clientX, y: event.clientY };
+    };
+    
+    const handlePointerDown = (event) => {
+      if (event.touches && event.touches.length === 2) {
+        // Pinch zoom start
+        const dx = event.touches[0].clientX - event.touches[1].clientX;
+        const dy = event.touches[0].clientY - event.touches[1].clientY;
+        touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+        event.preventDefault();
+      } else {
+        const coords = getEventCoords(event);
+        gameState.dragStart = coords;
+      }
+    };
+    
+    const handlePointerMove = (event) => {
+      if (event.touches && event.touches.length === 2) {
+        // Pinch zoom
+        const dx = event.touches[0].clientX - event.touches[1].clientX;
+        const dy = event.touches[0].clientY - event.touches[1].clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const scaleFactor = distance / touchStartDistance;
+        gameState.scale *= scaleFactor;
+        gameState.scale = Math.max(0.5, Math.min(2.0, gameState.scale));
+        touchStartDistance = distance;
+        drawCube();
+        event.preventDefault();
+      } else if (gameState.dragStart && gameState.rotationMode === 'view') {
+        const coords = getEventCoords(event);
+        const dx = coords.x - gameState.dragStart.x;
+        const dy = coords.y - gameState.dragStart.y;
+        
+        gameState.rotationY += dx * 0.5;
+        gameState.rotationX += dy * 0.5;
+        
+        gameState.dragStart = coords;
+        drawCube();
+      }
+    };
+    
+    const handlePointerUp = () => {
+      gameState.dragStart = null;
+      touchStartDistance = 0;
+    };
+    
+    const handlePointerClick = (event) => {
+      if (event.touches && event.touches.length > 1) return;
+      
+      const rect = canvas.getBoundingClientRect();
+      const coords = getEventCoords(event);
+      const x = coords.x - rect.left;
+      const y = coords.y - rect.top;
+      
+      if (!canvas.clickableSquares) return;
+      
+      // Find clicked square
+      for (const square of canvas.clickableSquares) {
+        const points = square.projected;
+        if (isPointInPolygon({ x, y }, points)) {
+          handleSquareClick(square.face, square.row, square.col);
+          break;
+        }
+      }
+    };
+    
     // Event listeners
-    canvas.addEventListener('click', onCanvasClick);
-    canvas.addEventListener('mousedown', onMouseDown);
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('mouseup', onMouseUp);
+    canvas.addEventListener('click', handlePointerClick);
+    canvas.addEventListener('mousedown', handlePointerDown);
+    canvas.addEventListener('mousemove', handlePointerMove);
+    canvas.addEventListener('mouseup', handlePointerUp);
+    
+    // Touch events
+    canvas.addEventListener('touchstart', handlePointerDown, { passive: false });
+    canvas.addEventListener('touchmove', handlePointerMove, { passive: false });
+    canvas.addEventListener('touchend', handlePointerUp);
+    
     canvas.addEventListener('wheel', onWheel);
     document.getElementById('new-game').addEventListener('click', newGame);
     document.getElementById('twist-cw').addEventListener('click', () => handleTwist(true));
     document.getElementById('twist-ccw').addEventListener('click', () => handleTwist(false));
     
     window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight - 70;
+      updateCanvasSize();
       drawCube();
     });
     
